@@ -5,6 +5,7 @@ dotenv.config();
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import connectDB from './config/connectDB.js';
 
 const app = express();
 app.use(cors({
@@ -23,6 +24,12 @@ app.get("/",(req,res)=>{
     res.send("Hello World");
 })
 
+connectDB().then(()=>{
+    console.log("MongoDB Connected");
+}).catch((error)=>{
+    console.error("MongoDB Connection Failed",error);
+    process.exit(1);
+})
 app.listen(PORT,()=>{
     console.log(`Server is running on port http://localhost:${PORT}`);
 })
